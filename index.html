@@ -23,7 +23,6 @@
             height: 600px;
         }
 
-        /* Orbit Path */
         .orbit {
             position: absolute;
             width: 100%;
@@ -42,7 +41,6 @@
             }
         }
 
-        /* Sun */
         .sun {
             position: absolute;
             width: 150px;
@@ -55,7 +53,6 @@
             box-shadow: 0 0 100px rgba(255, 150, 0, 0.8), 0 0 150px rgba(255, 200, 50, 0.5);
         }
 
-        /* Earth */
         .earth {
             position: absolute;
             width: 60px;
@@ -66,11 +63,9 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            animation: none; /* Remove the axis flipping effect */
             box-shadow: 0 0 30px rgba(0, 100, 255, 0.6);
         }
 
-        /* Fix Earth tilt */
         .earth-tilt {
             transform: rotate(23.5deg);
             position: absolute;
@@ -81,7 +76,6 @@
             justify-content: center;
         }
 
-        /* Earth Axis Indicator */
         .earth::before {
             content: "";
             position: absolute;
@@ -93,7 +87,6 @@
             transform: translate(-50%, -50%) rotate(23.5deg);
         }
 
-        /* Planetary Shadow */
         .earth::after {
             content: "";
             position: absolute;
@@ -105,7 +98,6 @@
             background: radial-gradient(circle at 60% 50%, rgba(0, 0, 0, 0.3), transparent 70%);
         }
 
-        /* Season Labels */
         .season-label {
             position: absolute;
             width: 100px;
@@ -115,20 +107,17 @@
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
         }
 
-        /* Positioning for season labels */
         .label-spring { top: 0; left: 50%; transform: translateX(-50%); }
         .label-summer { top: 50%; right: 10px; transform: translateY(-50%); }
         .label-fall { bottom: 0; left: 50%; transform: translateX(-50%); }
         .label-winter { top: 50%; left: 10px; transform: translateY(-50%); }
 
-        /* Highlighted season */
         .highlight {
             color: yellow;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(255, 255, 0, 0.7);
         }
 
-        /* Axial Tilt Control */
         .tilt-control {
             position: absolute;
             bottom: 20px;
@@ -154,25 +143,18 @@
 <body>
 
     <div class="solar-system">
-        <!-- Sun in the center -->
         <div class="sun"></div>
-        
-        <!-- Earth's orbit path -->
         <div class="orbit">
             <div class="earth-tilt">
-                <!-- Earth with tilted axis -->
                 <div class="earth" id="earth"></div>
             </div>
         </div>
-
-        <!-- Labels for seasons -->
         <div class="season-label label-spring">Spring</div>
         <div class="season-label label-summer">Summer</div>
         <div class="season-label label-fall">Fall</div>
         <div class="season-label label-winter">Winter</div>
     </div>
 
-    <!-- Axial Tilt Control -->
     <div class="tilt-control">
         <label for="tiltRange">Axial Tilt: </label>
         <input type="range" id="tiltRange" min="0" max="45" value="23.5" step="0.1">
@@ -183,16 +165,13 @@
         const seasonLabels = document.querySelectorAll('.season-label');
         const tiltRange = document.getElementById('tiltRange');
 
-        // Control axial tilt
         tiltRange.addEventListener('input', (e) => {
             const tiltValue = e.target.value;
-            earth.style.transform = `translateX(-50%)`;
             earth.parentElement.style.transform = `rotate(${tiltValue}deg)`;
         });
 
         function highlightSeason() {
             const currentDeg = getRotationDegrees(earth);
-            // Roughly mapping degrees to seasons
             seasonLabels.forEach(label => label.classList.remove('highlight'));
             if (currentDeg >= 45 && currentDeg <= 135) {
                 document.querySelector('.label-summer').classList.add('highlight');
@@ -205,7 +184,6 @@
             }
         }
 
-        // Get the rotation degrees of the Earth in the orbit
         function getRotationDegrees(element) {
             const computedStyle = window.getComputedStyle(element.parentElement);
             const matrix = computedStyle.transform || computedStyle.webkitTransform;
@@ -219,7 +197,6 @@
             return 0;
         }
 
-        // Update the highlighted season every frame
         function update() {
             highlightSeason();
             requestAnimationFrame(update);
