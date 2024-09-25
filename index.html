@@ -65,19 +65,20 @@
             border-radius: 50%;
             top: 0;
             left: 50%;
-            transform: translateX(-50%) rotate(23.5deg);
-            animation: rotate-axis 10s linear infinite;
+            transform: translateX(-50%);
+            animation: none; /* Remove the axis flipping effect */
             box-shadow: 0 0 30px rgba(0, 100, 255, 0.6);
         }
 
-        /* Earth rotation for daily spin */
-        @keyframes rotate-axis {
-            from {
-                transform: translateX(-50%) rotate(23.5deg) rotateY(0deg);
-            }
-            to {
-                transform: translateX(-50%) rotate(23.5deg) rotateY(360deg);
-            }
+        /* Fix Earth tilt */
+        .earth-tilt {
+            transform: rotate(23.5deg);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Earth Axis Indicator */
@@ -158,8 +159,10 @@
         
         <!-- Earth's orbit path -->
         <div class="orbit">
-            <!-- Earth with tilted axis -->
-            <div class="earth" id="earth"></div>
+            <div class="earth-tilt">
+                <!-- Earth with tilted axis -->
+                <div class="earth" id="earth"></div>
+            </div>
         </div>
 
         <!-- Labels for seasons -->
@@ -183,8 +186,8 @@
         // Control axial tilt
         tiltRange.addEventListener('input', (e) => {
             const tiltValue = e.target.value;
-            earth.style.transform = `translateX(-50%) rotate(${tiltValue}deg)`;
-            earth.querySelector('::before').style.transform = `translate(-50%, -50%) rotate(${tiltValue}deg)`;
+            earth.style.transform = `translateX(-50%)`;
+            earth.parentElement.style.transform = `rotate(${tiltValue}deg)`;
         });
 
         function highlightSeason() {
@@ -204,7 +207,7 @@
 
         // Get the rotation degrees of the Earth in the orbit
         function getRotationDegrees(element) {
-            const computedStyle = window.getComputedStyle(element);
+            const computedStyle = window.getComputedStyle(element.parentElement);
             const matrix = computedStyle.transform || computedStyle.webkitTransform;
             if (matrix !== 'none') {
                 const values = matrix.split('(')[1].split(')')[0].split(',');
